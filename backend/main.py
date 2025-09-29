@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api import upload
+from backend.api import qa, upload
 from backend.core.config import settings
 from backend.utils.logger import logger
 
 app = FastAPI(title=settings.app_name, version=settings.app_version)
 
 app.include_router(upload.router)
+app.include_router(qa.router)
 
 # 配置CORS
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
