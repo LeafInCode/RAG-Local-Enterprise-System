@@ -1,0 +1,33 @@
+{
+    // 使用 Ruff 作为 Python 的默认格式化器
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true
+    },
+
+    // 保存时自动运行 lint / import 修复
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true,
+        "source.organizeImports": true
+    },
+
+    // Python 解释器指向 uv 的虚拟环境（假设在项目根目录 .venv）
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+
+    // 使用 Pylance 做代码提示
+    "python.languageServer": "Pylance",
+
+    // 终端默认使用当前虚拟环境
+    "python.terminal.activateEnvironment": true,
+
+    // Ruff 配置
+    "ruff.lintOnSave": true,
+    "ruff.organizeImports": true,
+    "ruff.format": true,
+
+    // Mypy 集成（如果安装了 ms-python.mypy-type-checker 插件）
+    "mypy-type-checker.args": [
+        "--strict",
+        "--python-version=3.12"
+    ]
+}

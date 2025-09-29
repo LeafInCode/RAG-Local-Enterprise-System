@@ -1,0 +1,62 @@
+[project]
+name = "rag-local-enterprise-system"
+version = "0.1.0"
+description = "本地化企业级RAG知识库系统"
+authors = [
+    {name = "yezi", email = "18839136833@163.com"}
+]
+requires-python = ">=3.12"
+
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "langchain>=0.2.0",
+    "chromadb>=0.5.0",
+    "sentence-transformers>=2.7.0",
+    "python-multipart>=0.0.9",
+    "ollama>=0.1.7",
+    # 精简版 unstructured（避免 all-docs 拉太多 onnx/torch）
+    "unstructured[local-inference,docx,pptx,xlsx,pdf]>=0.12.5",
+    "markdown-it-py>=3.0.0",
+    "openpyxl>=3.1.2",
+    "python-pptx>=0.6.23",
+    "pandas>=2.2.0",
+    "beautifulsoup4>=4.12.3",
+    "python-magic>=0.4.27",
+    "loguru>=0.7.2",
+    "pydantic-settings>=2.11.0",
+    "mypy>=1.18.2",
+    "ruff>=0.13.2"
+]
+
+[tool.setuptools]
+packages = ["backend", "frontend"]
+include-package-data = true
+
+[tool.setuptools.package-data]
+"backend" = ["**/*.py"]
+"frontend" = ["**/*.html", "static/**/*"]
+
+# ---------------- Ruff 配置 ----------------
+[tool.ruff]
+line-length = 100
+indent-width = 4
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint.isort]
+known-first-party = ["backend", "frontend"]
+combine-as-imports = true
+
+# ---------------- MyPy 配置 ----------------
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+strict = true
