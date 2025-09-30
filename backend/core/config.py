@@ -22,6 +22,16 @@ class Settings(BaseSettings):
     # Embedding model name (sentence-transformers)
     embedding_model_name: str = "all-MiniLM-L6-v2"
 
+    # LLM settings
+    qianfan_ak: str | None = None
+    qianfan_sk: str | None = None
+    qianfan_model: str = "ERNIE-4.0-Turbo-8k"
+    qianfan_embed_model: str | None = None
+
+    MAX_CONTEXT_LENGTH: int = 8000  # 最大内容长度，超过则截断
+    SAFE_MARGIN: int = 500  # 安全边距，避免内容过长
+    MAX_CHUNK_LENGTH: int = 1000  # 最大分块长度
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
