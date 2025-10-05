@@ -27,7 +27,8 @@ dependencies = [
     "pydantic-settings>=2.11.0",
     "mypy>=1.18.2",
     "ruff>=0.13.2",
-    "langchain-community>=0.3.30"
+    "langchain-community>=0.3.30",
+    "qianfan>=0.4.12",
 ]
 
 [tool.setuptools]

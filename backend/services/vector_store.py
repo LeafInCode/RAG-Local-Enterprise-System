@@ -38,25 +38,38 @@ class VectorStore:
             logger.warning(f"No chunks to add for doc_id={doc_id}")
             return 0
 
-        ids = [f"{doc_id}_{i}" for i in range(len(chunks))]
+        # 过滤空白 chunks
+        clean_chunks, clean_metas = [], []
+        for chunk, meta in zip(chunks, metadatas or [{} for _ in chunks], strict=False):
+            if chunk and chunk.strip():
+                clean_chunks.append(chunk.strip())
+                clean_metas.append(meta)
+            else:
+                logger.debug(f"Skipping empty chunk with metadata: {meta}")
+
+        if not clean_chunks:
+            logger.warning(f"All chunks empty for doc_id={doc_id}")
+            return 0
+
+        ids = [f"{doc_id}_{i}" for i in range(len(clean_chunks))]
 
         # 直接使用列表推导式创建符合要求的元数据列表
         validated_metadatas: list[Metadata] = [
             {k: v for k, v in (meta or {}).items() if isinstance(v, (str, int, float, bool))}
-            for meta in metadatas or [{} for _ in chunks]
+            for meta in clean_metas
         ]
-        embeddings = self.embed_texts(chunks)
+        embeddings = self.embed_texts(clean_chunks)
         self.collection.add(
             ids=ids,
-            documents=chunks,
+            documents=clean_chunks,
             metadatas=validated_metadatas,  # type: ignore[arg-type]
             embeddings=embeddings,
         )
 
         if hasattr(self.client, "persist"):
             self.client.persist()
-        logger.info(f"Added {len(chunks)} chunks for doc_id={doc_id} to vector store")
-        return len(chunks)
+        logger.info(f"Added {len(clean_chunks)} chunks for doc_id={doc_id} to vector store")
+        return len(clean_chunks)
 
     def query(self, query_text: str, top_k: int = 5) -> list[dict[str, Any]]:
         """基于查询文本，从向量数据库中检索 top_k 相关的 chunks"""

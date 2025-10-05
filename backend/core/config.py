@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     data_dir: Path = project_root / "data"
     document_dir: Path = data_dir / "documents"
     vector_dir: Path = data_dir / "vector_db"
+    db_path: Path = data_dir / "document_index.db"
 
     # Chroma settings
     chroma_persist_directory: str = str(vector_dir)
@@ -43,3 +44,4 @@ settings = Settings()
 settings.data_dir.mkdir(parents=True, exist_ok=True)
 settings.document_dir.mkdir(parents=True, exist_ok=True)
 settings.vector_dir.mkdir(parents=True, exist_ok=True)
+settings.db_path.parent.mkdir(parents=True, exist_ok=True)
